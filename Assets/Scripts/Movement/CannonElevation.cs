@@ -1,0 +1,49 @@
+﻿
+using UnityEngine;
+
+
+
+public class CannonElevation : MonoBehaviour
+{
+
+
+    public float m_ElevateSpeed = 40f;            // How fast cannon will elevate
+    private float m_ElevateInputValue;             // The current value of the elevate input.
+
+    public float minAngle = -10;
+    public float maxAngle = 60;
+
+    private const int THRESHOLD = 20;
+
+    void Elevate()
+    {
+
+        m_ElevateInputValue = Input.GetAxis("CannonElevation");
+        m_ElevateInputValue = m_ElevateInputValue * Time.deltaTime * m_ElevateSpeed;
+        
+        transform.Rotate(0, 0, -m_ElevateInputValue);
+
+
+        //set maximum elevation angle
+        if (transform.localEulerAngles.z > maxAngle && transform.localEulerAngles.z < maxAngle + THRESHOLD)
+            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, maxAngle);
+
+        //set minimum elevation angle for two possibilities, over or below zero
+        if (minAngle < 0)
+        {
+            if (transform.localEulerAngles.z <= 360 + minAngle && transform.localEulerAngles.z > 360 + minAngle - THRESHOLD)
+                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, minAngle);
+        }
+        else 
+            if (transform.localEulerAngles.z <= minAngle || transform.localEulerAngles.z > maxAngle + THRESHOLD)
+                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, minAngle);
+
+    }
+
+
+    private void FixedUpdate()
+    {
+        Elevate();
+    }
+
+}
