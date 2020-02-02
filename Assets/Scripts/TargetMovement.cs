@@ -10,6 +10,8 @@ public class TargetMovement : MonoBehaviour
     public float minFrequency = 2.5f;
     public float maxMagnitude  = 2f;
     public float minMagnitude = 0.5f;
+    public float maxHorizontalMoveSpeed = 20f;
+    public float minHorizontalMoveSpeed = 10f;
 
     Vector3 pos, localScale;
 
@@ -21,6 +23,7 @@ public class TargetMovement : MonoBehaviour
 
     private const float planeScaleConstant = 5; // plane scale is 10 compared to global one, so we use 10/2 constants
 
+    [SerializeField]
     private float randomVerticalIntensity, randomHorizontalIntensity; //random values so that senoidal movement can have any direction
 
 
@@ -47,6 +50,8 @@ public class TargetMovement : MonoBehaviour
         maxFrequency = Random.Range(minFrequency, maxFrequency);
         maxMagnitude = Random.Range(minMagnitude, maxMagnitude);
 
+        maxHorizontalMoveSpeed = Random.Range(minHorizontalMoveSpeed, maxHorizontalMoveSpeed);
+
         planeSize = plane.transform.localScale * planeScaleConstant;    //set movement boundaries based on plane's size      
 
         pos = transform.position;
@@ -58,12 +63,51 @@ public class TargetMovement : MonoBehaviour
   
     void Update()
     {
-        Debug.Log(-plane.transform.localScale.x * planeScaleConstant);
-        Debug.Log(plane.transform.localScale.x * planeScaleConstant);
-        SenoidalVerticalMove();
-        SenoidalHorizontalMove();
+        //SenoidalVerticalMove();
+        // SenoidalHorizontalMove();
+        HorizontalHorizontalMove();
+        HorizontalVerticalMove();
     }
 
+    void HorizontalVerticalMove()
+    {
+        if (transform.position.z >= planeSize.z)
+            verticalPositiveMovement = false;
+        else if (transform.position.z <= -planeSize.z)
+            verticalPositiveMovement = true;
+
+        if (verticalPositiveMovement)
+        {
+            pos += transform.forward * Time.deltaTime * maxHorizontalMoveSpeed * randomVerticalIntensity;
+            transform.position = pos + transform.right;
+        }
+
+        else
+        {
+            pos -= transform.forward * Time.deltaTime * maxHorizontalMoveSpeed * randomVerticalIntensity;
+            transform.position = pos + transform.right;
+        }
+    }
+
+    void HorizontalHorizontalMove()
+    {
+        if (transform.position.x >= planeSize.x)
+            horizontalPositiveMovement = false;
+        else if (transform.position.x <= -planeSize.x)
+            horizontalPositiveMovement = true;
+
+        if (horizontalPositiveMovement)
+        {
+            pos += transform.right * Time.deltaTime * maxHorizontalMoveSpeed * randomHorizontalIntensity;
+            transform.position = pos + transform.forward;
+        }
+
+        else
+        {
+            pos -= transform.right * Time.deltaTime * maxHorizontalMoveSpeed * randomHorizontalIntensity;
+            transform.position = pos + transform.forward;
+        }
+    }
 
     void SenoidalHorizontalMove()
     {
@@ -73,9 +117,9 @@ public class TargetMovement : MonoBehaviour
             horizontalPositiveMovement = true;
 
         if (horizontalPositiveMovement)
-            MoveRight();
+            SenoidalMoveRight();
         else
-            MoveLeft();
+            SenoidalMoveLeft();
     }
    
 
@@ -87,32 +131,32 @@ public class TargetMovement : MonoBehaviour
             verticalPositiveMovement = true;
 
         if (verticalPositiveMovement)
-            MoveUp();
+            SenoidalMoveUp();
         else
-            MoveDown();
+            SenoidalMoveDown();
     }
 
-    void MoveRight()
+    void SenoidalMoveRight()
     {
         pos += transform.right * Time.deltaTime * maxMoveSpeed * randomHorizontalIntensity;
         transform.position = pos + transform.forward * Mathf.Sin(Time.time * maxFrequency) * maxMagnitude;
 
     }
 
-    void MoveLeft()
+    void SenoidalMoveLeft()
     {
         pos -= transform.right * Time.deltaTime * maxMoveSpeed * randomHorizontalIntensity;
         transform.position = pos + transform.forward * Mathf.Sin(Time.time * maxFrequency) * maxMagnitude;
     }
 
-    void MoveUp()
+    void SenoidalMoveUp()
     {
     
         pos += transform.forward * Time.deltaTime * maxMoveSpeed * randomVerticalIntensity;
         transform.position = pos + transform.right * Mathf.Sin(Time.time * maxFrequency) * maxMagnitude;
     }
 
-    void MoveDown()
+    void SenoidalMoveDown()
     {
         pos -= transform.forward * Time.deltaTime * maxMoveSpeed * randomVerticalIntensity;
         transform.position = pos + transform.right * Mathf.Sin(Time.time * maxFrequency) * maxMagnitude;
