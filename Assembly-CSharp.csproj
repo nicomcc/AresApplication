@@ -61,11 +61,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\BulletBehaviour.cs" />
-    <Compile Include="Assets\Scripts\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\GameInspector.cs" />
     <Compile Include="Assets\Scripts\Movement\BaseMovement.cs" />
     <Compile Include="Assets\Scripts\Movement\CannonElevation.cs" />
     <Compile Include="Assets\Scripts\Movement\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\ShotControl.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/Nicolas/AresUnityDemo/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>

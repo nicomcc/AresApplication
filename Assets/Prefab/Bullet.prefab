@@ -122,3 +122,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootPower: 1300
+  selfDestroyTime: 10
