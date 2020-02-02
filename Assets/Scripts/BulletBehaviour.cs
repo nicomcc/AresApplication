@@ -19,11 +19,22 @@ public class BulletBehaviour : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Start()
+     void Start()
     {
         Vector3 projectileDirection = (FirePoint.transform.position - BasePoint.transform.position).normalized;
         rb.AddForce(projectileDirection * shootPower);
         Destroy(gameObject, selfDestroyTime);     //Destroy after some time
     }
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Target")
+        {
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
+        }
+    }
+
+   
+
 }

@@ -8,8 +8,19 @@ public class GameController : MonoBehaviour
 
     public int Targets;
 
-    void Start()
+   //public GameInspector shotsControlInspec;
+    public GameObject shotControl;
+    public ShotControl shotControlInspec;
+
+
+    
+
+void Start()
     {
+        shotControlInspec = shotControl.GetComponent<ShotControl>();
+
+       
+
         int prefab;
         for(int i = 0; i < Targets; i++)
         {
@@ -21,11 +32,29 @@ public class GameController : MonoBehaviour
         if (prefab == 3)
                 Instantiate(target3);
         }
+
+        
     }
 
-    // Update is called once per frame
-    void Update()
+
+
+    private int CountTargets()
     {
-        
+         GameObject[] thingyToFind = GameObject.FindGameObjectsWithTag("Target");
+         return thingyToFind.Length;
+    }
+
+
+    private void Update()
+    {
+       // Debug.Log(CountTargets());
+    }
+
+    private void OnGUI()
+    {
+        GUI.contentColor = Color.black;
+        GUILayout.Label("");
+        GUILayout.Label("Shots Fired: " + shotControlInspec.shotsFired);
+        GUILayout.Label("Targets Left: " + CountTargets() + "/" + Targets);
     }
 }

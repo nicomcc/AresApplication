@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameInspector : MonoBehaviour
+public class ShotControl : MonoBehaviour
 {
     public GameObject projectile;
 
@@ -11,11 +11,9 @@ public class GameInspector : MonoBehaviour
     private GameObject newProjectile;
     private float myTime = 0.0F;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int shotsFired = 0;
+
+   
 
     // Update is called once per frame
     void Update()
@@ -31,7 +29,7 @@ public class GameInspector : MonoBehaviour
 
              nextFire = nextFire - myTime;
              myTime = 0.0F;
-        
+            shotsFired++;
         }
     }
 }

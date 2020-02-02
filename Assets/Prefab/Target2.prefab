@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2243629128079012478}
   m_Layer: 0
   m_Name: Target2
-  m_TagString: Untagged
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -117,4 +117,3 @@ MonoBehaviour:
   maxAngularSpeed: 4
   minAngularSpeed: 2
   movementBehaviour: 0
-  moveDelta: 0.2

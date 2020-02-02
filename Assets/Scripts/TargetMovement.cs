@@ -38,7 +38,7 @@ public class TargetMovement : MonoBehaviour
     private float randomVerticalIntensity, randomHorizontalIntensity; //random values so that senoidal movement can have any direction
 
     //preventing debouncing effect on circulat movement change
-    public float moveDelta = 0.2F;
+    private float moveDelta = 0.2F;
     private float previousTime = 0;
 
     private void Awake()

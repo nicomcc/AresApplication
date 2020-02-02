@@ -55,6 +55,7 @@ public class CannonElevation : MonoBehaviour
 
     private void OnGUI()
     {
+        GUI.contentColor = Color.black;
         GUILayout.Label("Elevation: " + Math.Round(AngleValue(), 2));
     }
 
