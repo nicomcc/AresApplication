@@ -121,4 +121,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be0acfe64c26b5c4690b642411ef128c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootPower: 900
+  shootPower: 1300

@@ -12,19 +12,20 @@ public class PlayerMovement : MonoBehaviour
     private float m_TurnInputValue;             // The current value of the turn input.
 
 
-    private void Start()
+    void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
+        
         Move();
         Turn();
     }
 
 
-    private void Move()
+    void Move()
     {
         m_MovementInputValue = Input.GetAxis("Vertical");
 
@@ -36,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     }
  
 
-    private void Turn()
+     void Turn()
     {
         m_TurnInputValue = Input.GetAxis("Horizontal");
 

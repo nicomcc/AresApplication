@@ -1,5 +1,6 @@
 ﻿
 using UnityEngine;
+using System;
 
 
 
@@ -20,7 +21,7 @@ public class CannonElevation : MonoBehaviour
 
         m_ElevateInputValue = Input.GetAxis("CannonElevation");
         m_ElevateInputValue = m_ElevateInputValue * Time.deltaTime * m_ElevateSpeed;
-        
+
         transform.Rotate(0, 0, -m_ElevateInputValue);
 
 
@@ -34,9 +35,9 @@ public class CannonElevation : MonoBehaviour
             if (transform.localEulerAngles.z <= 360 + minAngle && transform.localEulerAngles.z > 360 + minAngle - THRESHOLD)
                 transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, minAngle);
         }
-        else 
+        else
             if (transform.localEulerAngles.z <= minAngle || transform.localEulerAngles.z > maxAngle + THRESHOLD)
-                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, minAngle);
+            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, minAngle);
 
     }
 
@@ -44,6 +45,17 @@ public class CannonElevation : MonoBehaviour
     private void FixedUpdate()
     {
         Elevate();
+    }
+
+    public float AngleValue()
+    {
+        return (transform.localEulerAngles.z > 180) ? transform.localEulerAngles.z - 360 : transform.localEulerAngles.z;
+    }
+
+
+    private void OnGUI()
+    {
+        GUILayout.Label("Elevation: " + Math.Round(AngleValue(), 2));
     }
 
 }
