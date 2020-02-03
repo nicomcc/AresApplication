@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
+using UnityEngine.UI;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -10,12 +10,19 @@ public class GameController : MonoBehaviour
 
    //public GameInspector shotsControlInspec;
     public GameObject shotControl;
-    public ShotControl shotControlInspec;
+    private ShotControl shotControlInspec;
 
+    public float timeLeft = 120f;
+    public Text startText;
 
-    
+    private bool gameEnd = false;
 
-void Start()
+    private int numberOfTargets;
+    private float winnerTime;
+
+    private bool getTimeOnce = true;
+
+    void Start()
     {
         shotControlInspec = shotControl.GetComponent<ShotControl>();
 
@@ -47,7 +54,34 @@ void Start()
 
     private void Update()
     {
-       // Debug.Log(CountTargets());
+        numberOfTargets = CountTargets();
+
+        timeLeft -= Time.deltaTime;
+        if (!gameEnd)
+            startText.text = (timeLeft).ToString("F1");
+        if (timeLeft < 0)
+        {
+            timeLeft = 0;
+            gameEnd = true;
+            startText.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            startText.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            startText.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            startText.text = "Time's Up! " + numberOfTargets + " targets left!";
+        }
+
+        if (numberOfTargets == 0)
+        {
+            gameEnd = true;
+            
+            startText.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            startText.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            startText.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            if (getTimeOnce)
+                   winnerTime = timeLeft;
+            getTimeOnce = false;
+            startText.text = "Targets Destroyed! Time left: " + winnerTime.ToString("F1");
+        }
+
     }
 
     private void OnGUI()
@@ -55,6 +89,6 @@ void Start()
         GUI.contentColor = Color.black;
         GUILayout.Label("");
         GUILayout.Label("Shots Fired: " + shotControlInspec.shotsFired);
-        GUILayout.Label("Targets Left: " + CountTargets() + "/" + Targets);
+        GUILayout.Label("Targets Left: " + numberOfTargets + "/" + Targets);
     }
 }
