@@ -22,6 +22,9 @@ public class GameController : MonoBehaviour
 
     private bool getTimeOnce = true;
 
+    public GameObject camera1, camera2;
+    public GameObject miniCamera;
+
     void Start()
     {
         shotControlInspec = shotControl.GetComponent<ShotControl>();
@@ -86,9 +89,20 @@ public class GameController : MonoBehaviour
 
     private void OnGUI()
     {
+        if (GUILayout.Button("Change Camera"))
+        {
+            camera1.SetActive(!camera1.activeSelf);
+            camera2.SetActive(!camera1.activeSelf);
+        }
+        if (GUILayout.Button("MiniCamera"))
+        {
+            miniCamera.SetActive(!miniCamera.activeSelf);
+        }
+
         GUI.contentColor = Color.black;
         GUILayout.Label("");
         GUILayout.Label("Shots Fired: " + shotControlInspec.shotsFired);
         GUILayout.Label("Targets Left: " + numberOfTargets + "/" + Targets);
+        
     }
 }
