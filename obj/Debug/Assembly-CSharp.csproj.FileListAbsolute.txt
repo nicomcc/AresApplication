@@ -234,8 +234,8 @@ C:\Users\Nicolas\AresUnityDemo\Temp\bin\Debug\UnityEngine.VideoModule.xml
 C:\Users\Nicolas\AresUnityDemo\Temp\bin\Debug\UnityEngine.XRModule.xml
 C:\Users\Nicolas\AresUnityDemo\Temp\bin\Debug\nunit.framework.xml
 C:\Users\Nicolas\AresUnityDemo\Temp\bin\Debug\Vuforia.UnityExtensions.xml
-C:\Users\Nicolas\AresUnityDemo\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
 C:\Users\Nicolas\AresUnityDemo\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
 C:\Users\Nicolas\AresUnityDemo\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\Nicolas\AresUnityDemo\obj\Debug\Assembly-CSharp.dll
 C:\Users\Nicolas\AresUnityDemo\obj\Debug\Assembly-CSharp.pdb
+C:\Users\Nicolas\AresUnityDemo\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
