@@ -6,11 +6,13 @@ public class BulletBehaviour : MonoBehaviour
     
     private Rigidbody rb;
 
-    public float shootPower = 100f;
+    public float shootPower = 1300;
     public float selfDestroyTime = 10f;
 
     private GameObject BasePoint;
     private GameObject FirePoint;
+
+    public bool destroyTargetIfRollingOnFloor = false;
 
     void Awake()
     {
@@ -30,8 +32,16 @@ public class BulletBehaviour : MonoBehaviour
     {
         if (other.tag == "Target")
         {
-            Destroy(other.gameObject);
-            Destroy(this.gameObject);
+            if (!destroyTargetIfRollingOnFloor && transform.position.y > 0.3f)
+            {
+                Destroy(other.gameObject);
+                Destroy(this.gameObject);
+            }
+            else if (destroyTargetIfRollingOnFloor)
+            {                
+                Destroy(other.gameObject);
+                Destroy(this.gameObject);
+            }
         }
     }
 

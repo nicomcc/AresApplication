@@ -37,9 +37,6 @@ public class TargetMovement : MonoBehaviour
 
     private float randomVerticalIntensity, randomHorizontalIntensity; //random values so that senoidal movement can have any direction
 
-    //preventing debouncing effect on circulat movement change
-    private float moveDelta = 0.2F;
-    private float previousTime = 0;
 
     private void Awake()
     {
@@ -81,6 +78,7 @@ public class TargetMovement : MonoBehaviour
 
         pos = transform.position;
         localScale = transform.localScale;
+
     }
 
   
@@ -123,28 +121,12 @@ public class TargetMovement : MonoBehaviour
             angle = angle + Time.deltaTime * maxAngularSpeed;
         }
 
-        //debouning to prevent change direction lock bug        
-        if (transform.position.z >= planeSize.z || transform.position.x >= planeSize.x || transform.position.z <= -planeSize.z || transform.position.x <= -planeSize.x)
-        {
-            if (Time.time - previousTime >= moveDelta)
-            {
-                previousTime = Time.time;
-                clockWiseCircleMovement = !clockWiseCircleMovement;
-            }            
-        }
-
-        //angles limit value
         if (angle > 360f)
             angle = 0f;
     }
 
     void HorizontalVerticalMove()
     {
-        if (transform.position.z >= planeSize.z)  //change direction when reach boundary
-            verticalPositiveMovement = false;
-        else if (transform.position.z <= -planeSize.z)
-            verticalPositiveMovement = true;
-
         if (verticalPositiveMovement)
         {
             pos += transform.forward * Time.deltaTime * maxHorizontalMoveSpeed * randomVerticalIntensity;
@@ -160,11 +142,6 @@ public class TargetMovement : MonoBehaviour
 
     void HorizontalHorizontalMove()
     {
-        if (transform.position.x >= planeSize.x) //change direction when reach boundary
-            horizontalPositiveMovement = false;
-        else if (transform.position.x <= -planeSize.x)
-            horizontalPositiveMovement = true;
-
         if (horizontalPositiveMovement)
         {
             pos += transform.right * Time.deltaTime * maxHorizontalMoveSpeed * randomHorizontalIntensity;
@@ -180,11 +157,6 @@ public class TargetMovement : MonoBehaviour
 
     void SenoidalHorizontalMove()
     {
-        if (transform.position.x >= planeSize.x)
-            horizontalPositiveMovement = false;
-        else if (transform.position.x <= -planeSize.x)
-            horizontalPositiveMovement = true;
-
         if (horizontalPositiveMovement)
             SenoidalMoveRight();
         else
@@ -194,11 +166,6 @@ public class TargetMovement : MonoBehaviour
 
     void SenoidalVerticalMove()
     {
-        if (transform.position.z >= planeSize.z)
-            verticalPositiveMovement = false;
-        else if (transform.position.z <= -planeSize.z)
-            verticalPositiveMovement = true;
-
         if (verticalPositiveMovement)
             SenoidalMoveUp();
         else
@@ -229,5 +196,28 @@ public class TargetMovement : MonoBehaviour
     {
         pos -= transform.forward * Time.deltaTime * maxMoveSpeed * randomVerticalIntensity;
         transform.position = pos + transform.right * Mathf.Sin(Time.time * maxFrequency) * maxMagnitude;
+    }
+
+    private void OnTriggerEnter(Collider other) //change directions
+    {
+        if (other.tag == "BottomWall")
+        {
+            verticalPositiveMovement = true;
+            clockWiseCircleMovement = !clockWiseCircleMovement;
+        }
+        if (other.tag == "TopWall")
+        {
+            verticalPositiveMovement = false;
+            clockWiseCircleMovement = !clockWiseCircleMovement;
+        }
+        if (other.tag == "RightWall") {
+            horizontalPositiveMovement = false;
+        clockWiseCircleMovement = !clockWiseCircleMovement;
+    }
+        if (other.tag == "LeftWall")
+        {
+            horizontalPositiveMovement = true;
+            clockWiseCircleMovement = !clockWiseCircleMovement;
+        }
     }
 }

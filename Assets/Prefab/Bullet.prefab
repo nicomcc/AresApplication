@@ -123,3 +123,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootPower: 1300
   selfDestroyTime: 10
+  destroyTargetIfRollingOnFloor: 0

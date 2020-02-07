@@ -8,6 +8,11 @@ TagManager:
   - Plane
   - Target
   - ShooterObject
+  - BottomWall
+  - TopWall
+  - LeftWall
+  - RightWall
+  - Ground
   layers:
   - Default
   - TransparentFX
