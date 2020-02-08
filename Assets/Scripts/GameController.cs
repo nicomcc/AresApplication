@@ -27,9 +27,16 @@ public class GameController : MonoBehaviour
 
     private bool gameIsRunning = false;
 
+    private GameObject clientObject;
+    private TCPServer client;
+
+    private string input;
+
     void Awake()
     {
+        clientObject = GameObject.FindWithTag("Server");
         shotControlInspec = shotControl.GetComponent<ShotControl>();
+        client = clientObject.GetComponent<TCPServer>();
     }
 
 
@@ -146,6 +153,8 @@ public class GameController : MonoBehaviour
         GUI.contentColor = Color.black;
         GUILayout.Label("Shots Fired: " + shotControlInspec.shotsFired);
         GUILayout.Label("  Targets Left: " + numberOfTargets + "/" + Targets);
-        
+        GUILayout.EndHorizontal();
+        GUILayout.Label("");
+        GUILayout.Label(client.getClientMessage());
     }
 }

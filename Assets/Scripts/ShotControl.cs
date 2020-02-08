@@ -13,23 +13,29 @@ public class ShotControl : MonoBehaviour
 
     public int shotsFired = 0;
 
-   
+    private TCPServer client;
+
+
+    private void Awake()
+    {
+         client = GameObject.FindWithTag("Server").GetComponent<TCPServer>();
+    }
 
     // Update is called once per frame
     void Update()
     {
         myTime = myTime + Time.deltaTime;
 
-        if (Input.GetButton("Fire1") && myTime > nextFire)
-        { 
+        // if (Input.GetButton("Fire1") && myTime > nextFire)
+       if (client.getClientMessage()[0] == ' ' && myTime > nextFire)
+        {
              nextFire = myTime + fireDelta;
              newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
-
-        // create code here that animates the newProjectile
 
              nextFire = nextFire - myTime;
              myTime = 0.0F;
             shotsFired++;
+            client.setClientMessage("l");
         }
     }
 }
