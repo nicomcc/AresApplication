@@ -517,11 +517,16 @@ MonoBehaviour:
   target3: {fileID: 7908230227965126837, guid: 969431236ced9b94bbec61e41810ec05, type: 3}
   Targets: 15
   shotControl: {fileID: 1325824643}
-  time: 120
+  time: 20
   startText: {fileID: 1355874869}
+  numberOfTargets: 0
+  targetsHit: 0
+  winnerTime: 0
   camera1: {fileID: 303639058}
   camera2: {fileID: 534669902}
   miniCamera: {fileID: 1824458722}
+  gameIsRunning: 0
+  hasGameBeenStarted: 0
 --- !u!4 &207044858
 Transform:
   m_ObjectHideFlags: 0
@@ -1629,6 +1634,7 @@ MonoBehaviour:
   v_input: 0
   elevate_input: 0
   base_input: 0
+  shotControlObject: {fileID: 1325824643}
 --- !u!4 &1858160345
 Transform:
   m_ObjectHideFlags: 0

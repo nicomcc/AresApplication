@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     public Text startText;
 
     public int numberOfTargets;
+    public int targetsHit;
     public float winnerTime;
 
     private bool getTimeOnce = true;
@@ -26,6 +27,7 @@ public class GameController : MonoBehaviour
     public GameObject miniCamera;
 
     public bool gameIsRunning = false;
+    public bool hasGameBeenStarted = false;
 
     private GameObject clientObject;
     private TCPServer client;
@@ -51,6 +53,7 @@ public class GameController : MonoBehaviour
     private void Update()
     {
         numberOfTargets = CountTargets();
+        targetsHit = Targets - numberOfTargets;
 
         CheckCameraChange();
         ToggleMiniMap();
@@ -102,7 +105,9 @@ public class GameController : MonoBehaviour
         if (client.getClientMessage()[0] == 'b')
         {
             StartGame();
+            hasGameBeenStarted = true;
             client.setClientMessage("0");
+            
         }
     }
 

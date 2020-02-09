@@ -29,6 +29,9 @@ public class TCPServer : MonoBehaviour
     private ShotControl shotControlInspec;
     private GameController gameController;
 
+    private string gameStatus;
+    private int hits, shots;
+
     private void Awake()
     {
        
@@ -129,7 +132,30 @@ public class TCPServer : MonoBehaviour
     }
 
    
-	
+    private String GameStatus()
+    {
+        
+
+        if (!gameController.gameIsRunning && !gameController.hasGameBeenStarted)
+        {
+            gameStatus = "s";
+            hits = 0;
+            shots = 0;
+        }
+        else if (gameController.gameIsRunning && gameController.hasGameBeenStarted)
+        {
+            gameStatus = "r";
+            hits = gameController.targetsHit;
+            shots = shotControlInspec.shotsFired;
+        }
+        else if (!gameController.gameIsRunning && gameController.hasGameBeenStarted)
+            gameStatus = "e";        
+
+        gameStatus = gameStatus + shots.ToString() + "t" + hits.ToString();
+
+        return gameStatus;
+    }
+
     /// Runs in background TcpServerThread; Handles incomming TcpClient requests 	
     private void ListenForIncommingRequests()
     {
@@ -154,9 +180,10 @@ public class TCPServer : MonoBehaviour
                             Array.Copy(bytes, 0, incommingData, 0, length);
                             // Convert byte array to string message. 							
                             clientMessage = Encoding.ASCII.GetString(incommingData);
-                            int isGameRunning = (gameController.gameIsRunning) ? 1 : 0;
-                            string gameInfo = "s" + isGameRunning + "d" + shotControlInspec.shotsFired + "t" + gameController.numberOfTargets;
-                            SendMessage(gameInfo);
+
+                            //int isGameRunning = (gameController.gameIsRunning) ? 1 : 0;
+                           // string gameInfo = "s" + isGameRunning + "d" + shotControlInspec.shotsFired + "t" + gameController.numberOfTargets;
+                            SendMessage(GameStatus());
                             Debug.Log("client message received as: " + clientMessage);
                         }
                     }
