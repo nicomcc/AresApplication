@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\PlayerMovement\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\ShotControl.cs" />
     <Compile Include="Assets\Scripts\TargetMovement.cs" />
+    <Compile Include="Assets\Scripts\TCPServer.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/Nicolas/AresUnityDemo/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
