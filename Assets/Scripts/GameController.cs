@@ -54,6 +54,7 @@ public class GameController : MonoBehaviour
 
         CheckCameraChange();
         ToggleMiniMap();
+        CheckGameStart();
 
         if (gameIsRunning)
         {
@@ -68,7 +69,7 @@ public class GameController : MonoBehaviour
                 EndGame();
                 startText.text = "Time's Up! " + numberOfTargets + " targets left!";                
             }
-
+            
             if (numberOfTargets == 0)
             {
                 if (getTimeOnce)
@@ -83,8 +84,6 @@ public class GameController : MonoBehaviour
 
     private void InstantiateTargets()
     {
-
-
         int prefab;
         for (int i = 0; i < Targets; i++)
         {
@@ -95,6 +94,15 @@ public class GameController : MonoBehaviour
                 Instantiate(target2);
             if (prefab == 3)
                 Instantiate(target3);
+        }
+    }
+
+    void CheckGameStart()
+    {
+        if (client.getClientMessage()[0] == 'b')
+        {
+            StartGame();
+            client.setClientMessage("0");
         }
     }
 
@@ -138,27 +146,31 @@ public class GameController : MonoBehaviour
             client.setClientMessage("0");
         }
     }
+    void StartGame()
+    {
+        if (!gameIsRunning)
+        {
+            InstantiateTargets();
+            player.gameObject.SetActive(true);
+            camera1.transform.parent = player.transform;
 
+            startText.rectTransform.anchorMin = new Vector2(1f, 1f);
+            startText.rectTransform.anchorMax = new Vector2(1f, 1f);
+            startText.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+
+            numberOfTargets = CountTargets();
+            timeLeft = time;
+        }
+
+        gameIsRunning = true;
+    }
     private void OnGUI()
     {
         GUILayout.BeginHorizontal();
 
         if (GUILayout.Button("Start Game"))
         {
-            if (!gameIsRunning)
-            {
-                InstantiateTargets();
-                player.gameObject.SetActive(true);
-                camera1.transform.parent = player.transform;
-
-                startText.rectTransform.anchorMin = new Vector2(1f, 1f);
-                startText.rectTransform.anchorMax = new Vector2(1f, 1f);
-                startText.rectTransform.pivot = new Vector2(0.5f, 0.5f);
-
-                timeLeft = time;
-            }
-
-            gameIsRunning = true;
+            StartGame();
         }
 
         if (GUILayout.Button("Change Camera"))
