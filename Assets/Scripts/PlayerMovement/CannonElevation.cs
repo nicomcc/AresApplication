@@ -16,14 +16,25 @@ public class CannonElevation : MonoBehaviour
 
     private const int THRESHOLD = 20;
 
+    private float currentTime = 0, previousVerticalTime = 0;
+    public float moveDeltaTime = 0.05f;
+    private TCPServer client;
+
+    private void Awake()
+    {
+        client = GameObject.FindWithTag("Server").GetComponent<TCPServer>();
+    }
+
     void Elevate()
     {
 
-        m_ElevateInputValue = Input.GetAxis("CannonElevation");
+        //m_ElevateInputValue = Input.GetAxis("CannonElevation");
+        m_ElevateInputValue = client.elevate_input;
         m_ElevateInputValue = m_ElevateInputValue * Time.deltaTime * m_ElevateSpeed;
 
         transform.Rotate(0, 0, -m_ElevateInputValue);
 
+        client.ReadInputOnlyOnce('i', 'k', currentTime, previousVerticalTime, moveDeltaTime);
 
         //set maximum elevation angle
         if (transform.localEulerAngles.z > maxAngle && transform.localEulerAngles.z < maxAngle + THRESHOLD)

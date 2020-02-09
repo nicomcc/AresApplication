@@ -13,6 +13,7 @@ TagManager:
   - LeftWall
   - RightWall
   - Ground
+  - Server
   layers:
   - Default
   - TransparentFX

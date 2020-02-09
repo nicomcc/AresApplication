@@ -35,7 +35,7 @@ public class ShotControl : MonoBehaviour
              nextFire = nextFire - myTime;
              myTime = 0.0F;
             shotsFired++;
-            client.setClientMessage("l");
+            client.setClientMessage("0");
         }
     }
 }

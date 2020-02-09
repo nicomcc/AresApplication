@@ -13,10 +13,9 @@ public class PlayerMovement : MonoBehaviour
 
     private TCPServer client;
 
-    public float currentTime = 0, previousVerticalTime = 0;
-    public float moveDeltaTime = 200f;
+    private float currentTime = 0, previousVerticalTime = 0;
+    public float moveDeltaTime = 0.05f;
 
-    private bool getTimeOnce = true;
 
     private void Awake()
     {
@@ -37,12 +36,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Move()
     {
-        // m_MovementInputValue = Input.GetAxis("Vertical");
-        //client.ReadAndChangeInput('w', 's', currentTime, previousVerticalTime, moveDeltaTime);
-       
-        
         m_MovementInputValue = client.v_input;
-        //client.setClientMessage("l");
         // Create a vector in the direction the tank is facing with a magnitude based on the input, speed and the time between frames.
         Vector3 movement = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
 
@@ -50,34 +44,13 @@ public class PlayerMovement : MonoBehaviour
         m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
 
         client.ReadInputOnlyOnce('w', 's', currentTime, previousVerticalTime, moveDeltaTime);
-      //  currentTime = Time.time;
-        /*if ((client.getClientMessage()[0] == 'w' || client.getClientMessage()[0] == 's'))
-        {
-            if (getTimeOnce)
-            {
-                previousVerticalTime = currentTime;
-                getTimeOnce = false;
-            }
-            if (currentTime - previousVerticalTime > moveDeltaTime)
-            {
-                client.setClientMessage("l");
-                client.v_input = 0f;
-                previousVerticalTime = currentTime;
-                getTimeOnce = true;
-            }*/
-        
-
-        // client.v_input = 0;
     }
 
 
     void Turn()
     {
-        // m_TurnInputValue = Input.GetAxis("Horizontal");
-
-
         m_TurnInputValue = client.h_input;
-       // client.setClientMessage("l");
+
         // Determine the number of degrees to be turned based on the input, speed and time between frames.
         float turn = m_TurnInputValue * m_TurnSpeed * Time.deltaTime;
 

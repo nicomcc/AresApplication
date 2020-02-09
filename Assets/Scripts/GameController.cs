@@ -52,6 +52,9 @@ public class GameController : MonoBehaviour
     {
         numberOfTargets = CountTargets();
 
+        CheckCameraChange();
+        ToggleMiniMap();
+
         if (gameIsRunning)
         {
             timeLeft -= Time.deltaTime;
@@ -115,6 +118,25 @@ public class GameController : MonoBehaviour
         startText.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         startText.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
         startText.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+    }
+
+    void CheckCameraChange()
+    {
+        if (client.getClientMessage()[0] == 'c')
+        {
+            camera1.SetActive(!camera1.activeSelf);
+            camera2.SetActive(!camera1.activeSelf);
+            client.setClientMessage("0");
+        }
+    }
+
+    void ToggleMiniMap()
+    {
+        if (client.getClientMessage()[0] == 'm')
+        {
+            miniCamera.SetActive(!miniCamera.activeSelf);
+            client.setClientMessage("0");
+        }
     }
 
     private void OnGUI()

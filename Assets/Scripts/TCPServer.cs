@@ -27,8 +27,10 @@ public class TCPServer : MonoBehaviour
 
     public float h_input = 0f;
     public float v_input = 0f;
+    public float elevate_input = 0f;
+    public float base_input = 0f;
 
-    private string clientMessage = " ";
+    private string clientMessage = "0";
 
     private Vector2 smoothedInput;
 
@@ -64,9 +66,11 @@ public class TCPServer : MonoBehaviour
             }
             if (currentTime - previousTime > deltaTime)
             {
-                setClientMessage("l");
+                setClientMessage("0");
                 v_input = 0f;
                 h_input = 0f;
+                elevate_input = 0f;
+                base_input = 0f;
                 previousTime = currentTime;
                 getTimeOnce = true;
             }
@@ -89,18 +93,13 @@ public class TCPServer : MonoBehaviour
         {
             SendMessage("space pressed");
         }
-
-       // if (getClientMessage()[0] == 'w')
     }
 
     private float slidingH;
     private float slidingV;
 
     private void FixedUpdate()
-    {
-
-       
-
+    {     
         if (getClientMessage()[0] == 'w')
         {
             v_input = 1f;
@@ -117,30 +116,25 @@ public class TCPServer : MonoBehaviour
         {
             h_input = 1f;
         }
-
-        smoothedInput = SmoothInput(h_input, v_input);
-
-        float smoothedH = smoothedInput.x;
-        float smoothedV = smoothedInput.y;
-
+        else if (getClientMessage()[0] == 'j')
+        {
+            base_input = -1f;
+        }
+        else if (getClientMessage()[0] == 'l')
+        {
+            base_input = 1f;
+        }
+        else if (getClientMessage()[0] == 'i')
+        {
+            elevate_input = -1f;
+        }
+        else if (getClientMessage()[0] == 'k')
+        {
+            elevate_input = 1f;
+        }
     }
 
-
-    private Vector2 SmoothInput(float targetH, float targetV)
-    {
-        float sensitivity = 3f;
-        float deadZone = 0.001f;
-
-        slidingH = Mathf.MoveTowards(slidingH,
-                      targetH, sensitivity * Time.deltaTime);
-
-        slidingV = Mathf.MoveTowards(slidingV,
-                      targetV, sensitivity * Time.deltaTime);
-
-        return new Vector2(
-               (Mathf.Abs(slidingH) < deadZone) ? 0f : slidingH,
-               (Mathf.Abs(slidingV) < deadZone) ? 0f : slidingV);
-    }
+   
 
     /// <summary> 	
     /// Runs in background TcpServerThread; Handles incomming TcpClient requests 	
