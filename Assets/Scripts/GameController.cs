@@ -17,15 +17,15 @@ public class GameController : MonoBehaviour
     private float timeLeft;
     public Text startText;
 
-    private int numberOfTargets;
-    private float winnerTime;
+    public int numberOfTargets;
+    public float winnerTime;
 
     private bool getTimeOnce = true;
 
     public GameObject camera1, camera2;
     public GameObject miniCamera;
 
-    private bool gameIsRunning = false;
+    public bool gameIsRunning = false;
 
     private GameObject clientObject;
     private TCPServer client;

@@ -8,22 +8,13 @@ using System.Threading;
 using UnityEngine;
 
 public class TCPServer : MonoBehaviour
-{
-    #region private members 	
-    /// <summary> 	
-    /// TCPListener to listen for incomming TCP connection 	
-    /// requests. 	
-    /// </summary> 	
+{ 	
+ 
     private TcpListener tcpListener;
-    /// <summary> 
-    /// Background thread for TcpServer workload. 	
-    /// </summary> 	
+
     private Thread tcpListenerThread;
-    /// <summary> 	
-    /// Create handle to connected tcp client. 	
-    /// </summary> 	
+	
     private TcpClient connectedTcpClient;
-    #endregion
 
     public float h_input = 0f;
     public float v_input = 0f;
@@ -32,12 +23,20 @@ public class TCPServer : MonoBehaviour
 
     private string clientMessage = "0";
 
-    private Vector2 smoothedInput;
-
     private bool getTimeOnce = true;
 
+    public GameObject shotControlObject;
+    private ShotControl shotControlInspec;
+    private GameController gameController;
 
-    //check if there is a connection and then send the client message
+    private void Awake()
+    {
+       
+        shotControlInspec = shotControlObject.GetComponent<ShotControl>();
+        gameController = GameObject.FindWithTag("gameCon").GetComponent<GameController>();
+    }
+
+    //check if there is a connection and return client message
     public string getClientMessage()
     {
         if (connectedTcpClient == null)
@@ -77,6 +76,13 @@ public class TCPServer : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SendMessage("SPACE");
+        }
+    }
     // Use this for initialization
     void Start()
     {
@@ -85,18 +91,6 @@ public class TCPServer : MonoBehaviour
         tcpListenerThread.IsBackground = true;
         tcpListenerThread.Start();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SendMessage("space pressed");
-        }
-    }
-
-    private float slidingH;
-    private float slidingV;
 
     private void FixedUpdate()
     {     
@@ -135,15 +129,12 @@ public class TCPServer : MonoBehaviour
     }
 
    
-
-    /// <summary> 	
+	
     /// Runs in background TcpServerThread; Handles incomming TcpClient requests 	
-    /// </summary> 	
     private void ListenForIncommingRequests()
     {
         try
-        {
-            // Create listener on localhost port 8052. 			
+        {		
             tcpListener = new TcpListener(IPAddress.Parse("127.0.0.1"), 8052);
             tcpListener.Start();
             Debug.Log("Server is listening");
@@ -163,7 +154,9 @@ public class TCPServer : MonoBehaviour
                             Array.Copy(bytes, 0, incommingData, 0, length);
                             // Convert byte array to string message. 							
                             clientMessage = Encoding.ASCII.GetString(incommingData);
-                            SendMessage(clientMessage);
+                            int isGameRunning = (gameController.gameIsRunning) ? 1 : 0;
+                            string gameInfo = "s" + isGameRunning + "d" + shotControlInspec.shotsFired + "t" + gameController.numberOfTargets;
+                            SendMessage(gameInfo);
                             Debug.Log("client message received as: " + clientMessage);
                         }
                     }
@@ -175,9 +168,7 @@ public class TCPServer : MonoBehaviour
             Debug.Log("SocketException " + socketException.ToString());
         }
     }
-    /// <summary> 	
-    /// Send message to client using socket connection. 	
-    /// </summary> 	
+
     private void SendMessage(string messageSent)
     {
         if (connectedTcpClient == null)
@@ -186,8 +177,7 @@ public class TCPServer : MonoBehaviour
         }
 
         try
-        {
-            // Get a stream object for writing. 			
+        {			
             NetworkStream stream = connectedTcpClient.GetStream();
             if (stream.CanWrite)
             {
