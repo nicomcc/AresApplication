@@ -193,7 +193,5 @@ public class GameController : MonoBehaviour
         GUILayout.Label("Shots Fired: " + shotControlInspec.shotsFired);
         GUILayout.Label("  Targets Left: " + numberOfTargets + "/" + Targets);
         GUILayout.EndHorizontal();
-        GUILayout.Label("");
-        GUILayout.Label(client.getClientMessage());
     }
 }
